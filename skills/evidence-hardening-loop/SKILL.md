@@ -1,6 +1,6 @@
 ---
 name: evidence-hardening-loop
-description: The iterative follow-up pass to evidence-based-reasoning. After an evidence-based-reasoning pass leaves a conclusion resting on any weak point — an inference, a proxy, a guess, another tool's unverified claim — do not mark it done. Loop: find each weak point, dig for direct evidence that promotes it toward a confirmed point, and repeat until nothing load-bearing rests on a guess (or the remaining gap is explicitly declared irreducible). Use after evidence-based-reasoning, before reporting a diagnosis/status/"done" the user will act on.
+description: "The iterative follow-up pass to evidence-based-reasoning. After an evidence-based-reasoning pass leaves a conclusion resting on any weak point — an inference, a proxy, a guess, another tool's unverified claim — do not mark it done. Loop: find each weak point, dig for direct evidence that promotes it toward a confirmed point, and repeat until nothing load-bearing rests on a guess (or the remaining gap is explicitly declared irreducible). Use after evidence-based-reasoning, before reporting a diagnosis/status/'done' the user will act on."
 version: 1.0.0
 tags: [reasoning, evidence, methodology, rigor, verification, iteration, hardening]
 ---
