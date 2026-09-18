@@ -7,7 +7,7 @@ tags: [research, investigation, reasoning, evidence, bayesian, visualization, co
 
 # Evidence-Driven Research
 
-Turns a question into a trustworthy, quantified, *legible* answer. It is the pipeline you run for any investigation or research request: **gather → reason → harden → update beliefs Bayesian-style → visualize with the right chart → report in plain language.** The first three stages borrow existing skills; this skill adds the Bayesian belief-update, the visualization discipline, and the reader-friendliness bar, and sequences all of it.
+Turns a question into a trustworthy, quantified, *legible* answer. It is the pipeline you run for any investigation or research request: **gather → reason → harden → update beliefs Bayesian-style → visualize with the right chart → report in plain language.** Stages 2 and 3 delegate to the two reasoning skills alongside this one; this skill adds the gathering step, the Bayesian belief-update, the visualization discipline, and the reader-friendliness bar, and sequences all of it.
 
 ## When to invoke
 
@@ -42,12 +42,12 @@ Where the answer is a matter of degree, make the belief update **explicit** rath
 4. **Posterior** — the updated belief. Show the direction and rough magnitude of the shift; give a number when the inputs support one, a qualitative shift ("weakly → strongly likely") when they don't.
 
 Rules of the road:
-- **Diminishing, not certain.** Evidence updates a belief; it rarely drives it to 0 or 1. Resist "this proves it."
+- **Update, never prove.** Evidence shifts a belief; it rarely drives it to 0 or 1. Resist "this proves it."
 - **Independence check.** Two sources that copy the same origin are one piece of evidence, not two — don't double-count.
 - **Base-rate first.** A rare hypothesis needs strong evidence to become likely; state the base rate so a strong likelihood on a rare prior doesn't get over-read.
-- **Sensitivity.** If the posterior swings wildly on a shaky prior or likelihood, say so — that's a weak point to feed back into stage 3.
+- **Sensitivity.** If the posterior swings wildly on a shaky prior or likelihood, say so and return to stage 3 to harden that input before reporting the number.
 
-Keep the arithmetic honest and simple; a transparent estimate beats false precision.
+Keep the arithmetic simple and show your inputs — a transparent rough estimate is more useful than an opaque exact one.
 
 ### 5. Visualize — match the chart to the data shape
 
@@ -60,9 +60,9 @@ Every quantitative finding gets the chart that reveals it fastest. Chart choice 
 | Comparison across categories | **Bar** (grouped/stacked as needed) | ranking or comparing discrete items |
 | Distribution / spread | **Dot** plot (or strip/beeswarm) | showing where values cluster and scatter |
 | Multi-dimensional relationships | **3-D** (scatter/surface) | ≥3 interacting dimensions where 2-D loses the story — and only when it *adds* clarity |
-| Uncertainty around an estimate | error bars / band on the above | posteriors and ranges from stage 4 |
+| Uncertainty around an estimate | error bars / band on any of the above | plotting a stage-4 posterior — show the range, never a bare point |
 
-Don't hesitate to use 3-D for genuinely multi-dimensional data, but never for decoration — if a 2-D chart or small-multiples shows it more clearly, use that. Show the Bayesian result's uncertainty (range/interval), not just a point.
+Don't hesitate to use 3-D for genuinely multi-dimensional data, but never for decoration — if a 2-D chart or small-multiples shows it more clearly, use that.
 
 Render legibly regardless of tool: readable labels and units on every axis, a title stating what the chart shows, a colorblind-safe palette that also works in grayscale, and enough contrast to read in both light and dark backgrounds.
 
@@ -86,6 +86,8 @@ Word the answer so **any average reader** gets it without a glossary:
 4. **Update** — prior → likelihood ratio → posterior, shown explicitly with uncertainty.
 5. **Visualize** — chart matched to data shape (pie/line/bar/dot/3-D), rendered legibly.
 6. **Report** — plain-language answer, confidence in everyday terms, per-chart takeaway, gaps flagged.
+
+Stages 3–4 are a cycle, not a one-way step: a posterior that hinges on a shaky input sends you back to hardening before you report it.
 
 ---
 
