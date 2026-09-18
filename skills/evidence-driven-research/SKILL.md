@@ -1,6 +1,6 @@
 ---
 name: evidence-driven-research
-description: End-to-end discipline for investigation, research, and any information-seeking request. Gather sources, reason over them with evidence-based-reasoning and harden the weak points with evidence-hardening-loop, then update beliefs with explicit Bayesian inference (prior → evidence → likelihood → posterior) so findings are quantified, not just asserted. Present results with high affordance — the right chart for the data shape (proportion→pie, trend→line, comparison→bar, distribution→dot, multi-dimensional→3-D when it helps) — and word every conclusion so an average reader understands it without a glossary. Use whenever asked to investigate, research, look something up, compare options, estimate a quantity, or explain "what does the data say".
+description: End-to-end discipline for investigation, research, and any information-seeking request. Gather sources, reason over them with evidence-based-reasoning and harden the weak points with evidence-hardening-loop, then update beliefs with explicit Bayesian inference (prior → evidence → likelihood → posterior) so findings are quantified, not just asserted. Present results with high affordance — the right chart for the data shape (proportion→pie, trend→line, comparison→bar, timeline→Gantt, distribution→dot, multi-dimensional→3-D when it helps) — and word every conclusion so an average reader understands it without a glossary. Use whenever asked to investigate, research, look something up, compare options, estimate a quantity, or explain "what does the data say".
 version: 1.0.0
 tags: [research, investigation, reasoning, evidence, bayesian, visualization, communication]
 ---
@@ -58,6 +58,7 @@ Every quantitative finding gets the chart that reveals it fastest. Chart choice 
 | Proportion / share of a whole | **Pie** (or donut) | parts sum to 100% and count is small |
 | Trend over time / ordered axis | **Line** | showing change, trajectory, before/after |
 | Comparison across categories | **Bar** (grouped/stacked as needed) | ranking or comparing discrete items |
+| Timeline of events / phases | **Gantt chart** | showing when things start, end, overlap, or block each other |
 | Distribution / spread | **Dot** plot (or strip/beeswarm) | showing where values cluster and scatter |
 | Multi-dimensional relationships | **3-D** (scatter/surface) | ≥3 interacting dimensions where 2-D loses the story — and only when it *adds* clarity |
 | Uncertainty around an estimate | error bars / band on any of the above | plotting a stage-4 posterior — show the range, never a bare point |
@@ -84,7 +85,7 @@ Word the answer so **any average reader** gets it without a glossary:
 2. **Reason** — run `evidence-based-reasoning` (evidence + link + label + reconcile).
 3. **Harden** — run `evidence-hardening-loop` on load-bearing weak points.
 4. **Update** — prior → likelihood ratio → posterior, shown explicitly with uncertainty.
-5. **Visualize** — chart matched to data shape (pie/line/bar/dot/3-D), rendered legibly.
+5. **Visualize** — chart matched to data shape (pie/line/bar/Gantt/dot/3-D), rendered legibly.
 6. **Report** — plain-language answer, confidence in everyday terms, per-chart takeaway, gaps flagged.
 
 Stages 3–4 are a cycle, not a one-way step: a posterior that hinges on a shaky input sends you back to hardening before you report it.
