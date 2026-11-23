@@ -15,6 +15,8 @@ Find where code spends more time, memory or I/O than it needs to. For each flaw,
 
 Performance and modularity pull in different directions at times. Clean boundaries can add calls, copies and indirection; speed-ups can merge units or share state. This skill treats both as standard engineering goals and makes every trade-off explicit (see "Design tension").
 
+`references/background.md` explains how and why the skill was built: its sources, its trade-offs, and the reasoning behind the method. Read it before changing the skill. You don't need it to run one.
+
 ## Hard rules
 
 1. **Read-only.** Do not edit the reviewed code. Write benchmarks and reproductions only in a temporary folder outside the reviewed repo.
@@ -102,7 +104,7 @@ Fixes that keep boundaries, in order of preference:
 4. **Move the work to the data.** Move a filter, join or aggregate into the unit (or the database) that already holds the data, instead of moving the data to the work.
 5. **Remove a layer that does no work.** A pass-through layer or mapping chain that adds cost and no value is also over-engineering. Removing it helps both goals.
 
-Fixes that cost modularity: inlining another unit's logic, sharing a mutable structure between units, bypassing an owner to read its storage directly, or merging units. Recommend one only when the finding is critical or high, **measured**, and no fix above is enough. Then state the coupling or cohesion type it creates (for example "this adds common coupling: two units would write the same state", using the coupling-cohesion-review skill's terms when that skill is available) and what it would cost to maintain.
+Fixes that cost modularity: inlining another unit's logic, sharing a mutable structure between units, bypassing an owner to read its storage directly, or merging units. Recommend one only when the finding is critical or high, **measured**, and no fix above is enough. Then state the coupling or cohesion type it creates (for example "this adds common coupling: two units would write the same state", using the terms of the public [coupling-cohesion-review](https://github.com/pandazy/jankenpon/blob/main/skills/coupling-cohesion-review/SKILL.md) skill when it is available) and what it would cost to maintain.
 
 The reverse also holds. When the reviewed code is a refactor done for modularity, check whether it added a flaw on a hot path: new round trips across a new boundary, new copies between layers, or indirection in a tight loop. Rate such costs with the Severity table like any other flaw. Off the hot path they are low at most, so say so and keep the refactor.
 

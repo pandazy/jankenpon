@@ -575,7 +575,7 @@ DECISIONS = {
 }
 SOURCES = {
     'js': r'\b(?:req|request|ctx\.request)\.(?:body|query|params|headers|cookies|files)\b|\bprocess\.(?:argv|env)\b'
-          r'|\bevent\.(?:body|queryStringParameters|pathParameters|headers)\b|\blocation\.(?:search|hash|href|pathname)\b'
+          r'|\bevent\.(?:body|headers)\b|\blocation\.(?:search|hash|href|pathname)\b'
           r'|\bdocument\.(?:cookie|referrer)\b|\bwindow\.name\b|\bURLSearchParams\b|\blocalStorage\.getItem\b|\.searchParams\b',
     'java': r'\.(?:getParameter|getParameterValues|getParameterMap|getHeader|getHeaders|getQueryString|getInputStream'
             r'|getReader|getCookies|getPathInfo|getRequestURI)\s*\(|@(?:RequestParam|PathVariable|RequestBody|RequestHeader'

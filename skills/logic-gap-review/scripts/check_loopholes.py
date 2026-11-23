@@ -37,7 +37,9 @@ CONCRETE_CHARS = re.compile(r'[0-9"\'`\[\]{}()=:<>/\\-]')
 CONCRETE_WORDS = re.compile(r'\b(?:null|nil|None|undefined|NaN|Infinity|true|false|True|False|empty)\b')
 SECRETS = [
     ('private key', re.compile(r'-----BEGIN [A-Z ]*PRIVATE KEY-----')),
-    ('access key ID', re.compile(r'\bAKIA[0-9A-Z]{16}\b')),
+    # A long token that mixes upper case, lower case and digits, the shape most generated keys share.
+    ('long random-looking key', re.compile(r'(?<![\w+/-])(?=[\w+/-]*[A-Z])(?=[\w+/-]*[a-z])(?=[\w+/-]*\d)'
+                                         r'[\w+/-]{32,}={0,2}(?![\w+/-])')),
     ('signed token', re.compile(r'\beyJ[\w-]{10,}\.[\w-]{10,}\.[\w-]{10,}')),
     ('credential value', re.compile(r'(?i)\b(?:password|passwd|secret|token|api[_-]?key)\b\s*[:=]\s*[\'"]?'
                                     r'[^\s\'"<${][^\s\'"]{7,}')),

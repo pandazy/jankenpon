@@ -1,7 +1,7 @@
 ---
 name: coupling-cohesion-review
 description: "Review any codebase for coupling and cohesion. Map the units (packages, folders, files, classes, functions), classify each notable coupling and cohesion by its classic type, score it green / yellow / red, give practical fixes for red items, and check green items for over-engineering — preferring KISS and Occam's Razor over chasing the theoretical best. Works for any language, framework, domain or team. Read-only: it reports, it does not refactor. Ships two optional standard-library Python scripts: one collects signals (import graph, cycles, folder direction, unused files, shared state, flag parameters, change history), one checks the finished report. Every finding cites code and its evidence grade, and the report opens with the answer in plain words. Use when asked to assess design quality, modularity, coupling, cohesion, architecture health, dependency tangles, refactoring targets, or 'is this over-engineered?'."
-version: 1.0.0
+version: 2.0.0
 tags: [architecture, design, coupling, cohesion, modularity, refactoring, code-review, dependencies, kiss, occams-razor, over-engineering]
 ---
 
@@ -13,6 +13,8 @@ Find where the code is tangled (high coupling) or scattered (low cohesion). Say 
 - **Cohesion** — how well the parts inside one unit belong together. Higher is better.
 
 A **unit** is whatever boundary the codebase uses: a package, folder, module, file, class or function. Pick the level that fits the question (Step 1).
+
+`references/background.md` explains how and why the skill was built: its sources, its trade-offs, and the reasoning behind the method. Read it before changing the skill. You don't need it to run one.
 
 ## Hard rules
 

@@ -15,6 +15,8 @@ Code fails most often in the cases it never wrote down. This skill finds those c
 
 The output is a list of loopholes. What happens next (a fix, a false-alarm review, an escalation) is done by whoever reads the list. This skill does not do that work.
 
+`references/background.md` explains how and why the skill was built: its sources, its trade-offs, and the reasoning behind the method. Read it before changing the skill. You don't need it to run one.
+
 ## Hard rules
 
 1. **Read-only.** Do not edit the reviewed code. Write reproductions only in a temporary folder outside the reviewed repo.
@@ -76,6 +78,8 @@ Status follows from the evidence:
 | Guess | suspected only |
 
 Before you report, re-check every critical and high loophole. If one rests on weak evidence, read the path or reproduce it. If you cannot, mark it *suspected* (rated medium at most) with the check that would settle it. If a later observation contradicts an item, change it or dismiss it. Never keep both versions.
+
+(This follows the public [evidence-driven-reasoning](https://github.com/pandazy/jankenpon/blob/main/skills/evidence-driven-reasoning/SKILL.md) skill. The rules above are enough on their own if that skill is not available.)
 
 ---
 
@@ -267,7 +271,7 @@ The input is a JSON array of items, or an object with an `items` array. The scri
 - that categories, severities and evidence grades are valid;
 - the evidence rules above;
 - that loopholes run from critical to low;
-- that no value looks like a private key, an access key, a signed token or a credential.
+- that no value looks like a private key, a long random-looking key, a signed token or a credential value.
 
 Each problem prints as a `FAIL` line. The script exits `0` and prints `OK` when the list passes, and exits `1` when it does not. Fix every `FAIL` and run it again. The tables print only when the list passes.
 
