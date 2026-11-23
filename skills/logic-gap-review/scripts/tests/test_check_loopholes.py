@@ -80,10 +80,13 @@ class Rules(unittest.TestCase):
         self.assertIn('must be ordered', ' '.join(fails(items)))
 
     def test_secret_shapes(self):
-        for value in ('-----BEGIN RSA PRIVATE KEY-----', 'AKIAABCDEFGHIJKLMNOP',
+        for value in ('-----BEGIN RSA PRIVATE KEY-----', 'Zq8vR2mXk4LpT7wN1yB5cF9hJ3dG6sQe0aUiOuY',
                       'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.abcdefghijklmnop', 'password=hunter22secret'):
             self.assertIn('cite the location instead', ' '.join(fails(with_change(1, trigger=value))), value)
         self.assertEqual(fails(with_change(1, trigger='token=<redacted>')), [])
+        # A commit hash or a long lower-case path is not a key.
+        self.assertEqual(fails(with_change(1, trigger='commit 91f2c674522b537fd164c497c11cd18765c791ab')), [])
+        self.assertEqual(fails(with_change(1, trigger='/very/long/path/segment_name_with_numbers_123/x')), [])
 
 
 class Markdown(unittest.TestCase):
