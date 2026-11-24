@@ -9,3 +9,4 @@ This repo holds skills for AI agents. Each skill is a folder in `skills/`:
 - **github-dev-squad**: Plan, build, test and open a pull request for a GitHub task with a team of agents, and get a person's approval at each step.
 - **logic-gap-review**: Find bugs in the cases the code does not handle, and give an input that triggers each bug.
 - **performance-review**: Find what makes the code slow or use too much memory, rank each problem, and show the code that causes it.
+- **race-condition-review**: Find bugs that depend on timing, rank each one, and show the order of events that triggers it.
