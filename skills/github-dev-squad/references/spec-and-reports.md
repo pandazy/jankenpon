@@ -82,7 +82,7 @@ Each with its evidence grade.
 | 1 | 1.1, 2.1 | different files, no dependency |
 
 ## Critical alerts
-| # | Phase / task | Kind (performance / coupling / cohesion) | Where | Issue | Decision (approved / declined, and why) | Result |
+| # | Phase / task | Kind (performance / race / coupling / cohesion) | Where | Issue | Decision (approved / declined, and why) | Result |
 |---|---|---|---|---|---|---|
 
 ## Review rounds
@@ -105,7 +105,7 @@ Write the text with `crystal-clear`. Each report has these parts, in order:
    - *Requirements:* a requirement table (ID, criterion, priority), out of scope, open questions.
    - *Design:* the architecture diagram, components, an evidence table with colored grade badges, and risks.
    - *Tasks:* a task table (ID, task, requirements, files, depends on), the waves as columns, and a dependency diagram.
-   - *Refactor:* a table of findings (🔴/🟡/🟢 with score, where, why it hurts, fix — as changed by the performance check, performance effect, performance verdict) and a checkbox column the commander can use when replying. Leave out items already fixed as contained. Below it, a **Rejected suggestions** table (suggestion, the critical performance flaw it would cause, reason, evidence) with no checkbox, then the critical alerts raised in this phase and their decisions.
+   - *Refactor:* a table of findings (🔴/🟡/🟢 with score, where, why it hurts, fix — as changed by the performance check, performance effect, performance verdict) and a checkbox column the commander can use when replying. Leave out items already fixed as contained. Below it, a **Rejected suggestions** table (suggestion, the critical performance flaw it would cause, reason, evidence) with no checkbox, then the critical alerts raised in this phase and their decisions. Last, a **Race conditions** table with every race found for the group (from its task audits and the performance check), highest severity first: severity, where, interleaving and broken invariant, evidence, fix, and a checkbox column.
 5. **Traceability** (design and tasks) — requirement → design section → task. Show a gap in red.
 
 ### Style

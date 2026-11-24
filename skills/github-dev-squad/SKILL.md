@@ -1,8 +1,8 @@
 ---
 name: github-dev-squad
-description: "Run a development task in a GitHub repository as a squad: a sergeant (the main agent) drives a spec flow (requirements → design → tasks), dispatches developer–auditor units to build and test each task (in parallel on separate git worktrees when tasks don't conflict), runs a coupling/cohesion review after each task group, then opens a pull request with evidence, watches CI, and routes review comments back to the units. A human commander approves every phase and every outward-facing action. The developer follows coding-principles; the auditor uses logic-gap-review and performance-review, owns tests, coverage and e2e evidence, and checks each coupling/cohesion suggestion for its performance cost; critical coupling, cohesion or performance issues whose issue or fix reaches beyond the change go to the commander at once. Uses git and gh; any language. Use for a feature, fix or refactor that deserves a spec, review and pull request, or when asked for 'the squad', 'dev squad' or 'spec-driven development'."
-version: 1.1.0
-tags: [development, workflow, spec, github, pull-request, multi-agent, code-review, testing, performance, ci, orchestration]
+description: "Run a development task in a GitHub repository as a squad: a sergeant (the main agent) drives a spec flow (requirements → design → tasks), dispatches developer–auditor units to build and test each task (in parallel on separate git worktrees when tasks don't conflict), runs a coupling/cohesion review after each task group, then opens a pull request with evidence, watches CI, and routes review comments back to the units. A human commander approves every phase and every outward-facing action. The developer follows coding-principles; the auditor uses logic-gap-review, performance-review and, last, race-condition-review, owns tests, coverage and e2e evidence, and audits again after every fix; races go to the commander in the refactor report. Critical issues that reach beyond the change go to the commander at once. Uses git and gh; any language. Use for a feature, fix or refactor that deserves a spec, review and pull request, or when asked for 'the squad', 'dev squad' or 'spec-driven development'."
+version: 1.2.0
+tags: [development, workflow, spec, github, pull-request, multi-agent, code-review, testing, performance, concurrency, ci, orchestration]
 ---
 
 # GitHub Dev Squad
@@ -27,6 +27,7 @@ All of them live in this skill's own repository. Use no other skill.
 | `coding-principles` | Developer | Occam's Razor, KISS, fit into the existing code |
 | `logic-gap-review` | Auditor | Edge cases, missing branches, potential bugs |
 | `performance-review` | Auditor | Performance flaws in each task's code, and the performance cost of each structure-review suggestion |
+| `race-condition-review` | Auditor | Race conditions in each task's code and across each task group, run as the last check. Non-critical races go to the commander in the refactor report |
 | `evidence-driven-reasoning` | Sergeant, Auditor | Research to fill knowledge gaps; every claim graded |
 | `crystal-clear` | Sergeant | Every report and the pull request description |
 | `coupling-cohesion-review` | Sergeant | Structure review after each major task group |
@@ -48,8 +49,9 @@ Load a skill when its step begins. If one is not installed, say so to the comman
 5. **Three review rounds, then escalate.** If a developer and auditor still disagree after 3 rounds on one task, bring the open items to the commander. An audit that ends in `critical alert`, and the fix that follows it, do not count toward the 3, and neither does a round whose only open items are `critical (contained)` findings that the developer is fixing, not disputing.
 6. **Spec files stay out of the project's history.** Ask the commander for the spec root in Phase 0. Recommend `<repo root>/.dev-squad/`, and add `.dev-squad/` to `.git/info/exclude` (local to this clone, never committed, and shared by its worktrees). Write each feature to `<spec root>/<feature>/`. Do not commit spec files unless the commander asks.
 7. **Runtime-agnostic.** "Dispatch a subagent" means the runtime's subagent tool. If the runtime has none, play the roles yourself in turn. Always finish one role's output before you switch to the next role, and keep the auditor's pass separate from the developer's reasoning.
-8. **Critical issues that ripple go to the commander at once.** A critical coupling, cohesion or performance issue whose issue or fix reaches beyond the change does not wait for the next gate. One that stays inside the change is simply fixed. Follow "Critical alerts" below, in any phase.
+8. **Critical issues that ripple go to the commander at once.** A critical coupling, cohesion, performance or race issue whose issue or fix reaches beyond the change does not wait for the next gate. One that stays inside the change is simply fixed. Follow "Critical alerts" below, in any phase.
 9. **No secrets, no private data.** Do not put credentials, tokens, personal data, internal host names or private URLs in specs, reports, commits, evidence or the pull request. On a public repository, everything pushed is public.
+10. **Every fix is audited again, in full.** Whenever a developer changes code to fix anything (an audit finding, a contained critical issue, an approved alert fix, a refactor, a CI fix or a review change), send the auditor back to run its whole audit on the updated code, `race-condition-review` included, not only the items it raised. A fix can open a new gap, slow a hot path or create a new race.
 
 ---
 
@@ -114,7 +116,7 @@ For each wave:
 2. **Dispatch** one developer per task, with the brief from `references/developer.md` filled in.
 3. When a developer returns its **handoff note**, dispatch its auditor with the note and the brief from `references/auditor.md`.
 4. If the auditor's verdict is `critical alert`, follow "Critical alerts" now.
-5. **Relay** the auditor's findings to the same developer. Repeat until the auditor's verdict is `pass`, or until round 3 (then escalate, rule 5).
+5. **Relay** the auditor's findings to the same developer. After each fix, the auditor audits again in full (rule 10). Repeat until the auditor's verdict is `pass`, or until round 3 (then escalate, rule 5).
 6. **Merge** each unit's branch into the feature branch locally. Run the full build and tests once. If they fail, send the failure to the unit whose files are involved. Then remove the unit's worktree and branch.
 7. Tick the tasks in `tasks.md`. Add each unit's evidence files to `<spec root>/<feature>/evidence/`.
 
@@ -122,17 +124,17 @@ For each wave:
 
 1. When a task group is done, run `coupling-cohesion-review` on the code that the group added or changed (`git diff <base>...HEAD`), and on the units it talks to.
 2. Turn each 🔴 red item into a refactor suggestion: where it is, why it hurts, and the simplest fix. Also flag 🟢 items that look over-engineered.
-3. **Performance check.** Dispatch an auditor in structure-review mode (see `references/auditor.md`) with the reviewed code and the suggestion list. Tell it the change under review: the group's code, or the whole change in the final pass. It runs `performance-review` on the same code and rates the performance effect of each suggestion. A suggestion whose fix would cause a critical performance issue is **rejected**. Keep it in the report with the reason and the evidence.
-4. **Contained critical items.** For each structure item scored 🔴 0 or 1, decide whether it is contained or ripples ("Critical alerts"). Then take each contained item, and each flaw the performance check marked `critical (contained)`:
+3. **Performance check.** Dispatch an auditor in structure-review mode (see `references/auditor.md`) with the reviewed code and the suggestion list. Tell it the change under review: the group's code, or the whole change in the final pass. It runs `performance-review` on the same code and rates the performance effect of each suggestion. Last, it runs `race-condition-review` on the same code, for races between the group's tasks: state that more than one task's code touches. A suggestion whose fix would cause a critical performance issue is **rejected**. Keep it in the report with the reason and the evidence.
+4. **Contained critical items.** For each structure item scored 🔴 0 or 1, decide whether it is contained or ripples ("Critical alerts"). Then take each contained item, and each flaw or race the performance check marked `critical (contained)`:
    - If its fix is `keep` or `keep, with a change`, dispatch a fix unit at once, with the change applied. Brief it like a step-8 refactor unit: ID `<group>-fix-<n>`, the item's files as its files, and no behavior change.
    - If its fix is `keep, flagged` or `reject`, it goes to G4 as a normal suggestion.
-   - A contained performance flaw has no such verdict. It goes straight to a fix unit, unless its fix would turn a structure item into 🔴 0 or 1; then it goes to G4.
+   - A contained performance flaw or race has no such verdict. It goes straight to a fix unit, unless its fix would turn a structure item into 🔴 0 or 1; then it goes to G4.
    A fix unit's test output stays in `evidence/` as proof, but the fix is not listed by itself in any report or in the description.
    Contained fix units must reach `pass` before step 6.
 5. If the performance check returns `critical alert`, or any structure item scored 🔴 0 or 1 ripples, follow "Critical alerts" before you continue.
-6. Render `report-refactor-<group>.html`. Leave out the items already fixed as contained.
-7. **G4** — send it to the commander. Wait for the all-clear on **which** of the suggestions to do.
-8. Dispatch developer–auditor units for the approved refactors, the same way as Phase 4. Refactors must not change behavior: the auditor checks that the existing tests still pass, unchanged.
+6. Render `report-refactor-<group>.html`. Leave out the items already fixed as contained. Include **every race** found for the group: the races from its task audits and from the performance check.
+7. **G4** — send it to the commander. Wait for the all-clear on **which** of the suggestions and race fixes to do.
+8. Dispatch developer–auditor units for the approved refactors, the same way as Phase 4. Refactors must not change behavior: the auditor checks that the existing tests still pass, unchanged. A race fix may change behavior only in the race's bad interleaving: its auditor adds a test that forces that interleaving and fails without the fix.
 
 Run this phase once more over the whole change before Phase 6.
 
@@ -158,7 +160,8 @@ Run this phase once more over the whole change before Phase 6.
 A **critical issue** is one of these:
 
 - a performance flaw rated **critical** by `performance-review`;
-- a coupling or cohesion item that `coupling-cohesion-review` scores 🔴 **0 or 1** after its adjustment, such as content coupling or coincidental cohesion.
+- a coupling or cohesion item that `coupling-cohesion-review` scores 🔴 **0 or 1** after its adjustment, such as content coupling or coincidental cohesion;
+- a race that `race-condition-review` rates **critical**.
 
 A critical logic gap is not on this list. It is a normal finding that makes the verdict `changes needed`.
 
@@ -173,10 +176,10 @@ A contained critical issue is fixed at once: no alert, no log entry, no gate. In
 
 Only a critical issue that ripples goes through the steps below.
 
-Auditors raise performance alerts: every task-mode auditor (any developer–auditor unit, in any phase) and the structure-review auditor. You raise the coupling and cohesion alerts in Phase 5, after the performance check, so that each alert can state its fix's performance effect.
+Auditors raise performance and race alerts: every task-mode auditor (any developer–auditor unit, in any phase) and the structure-review auditor. You raise the coupling and cohesion alerts in Phase 5, after the performance check, so that each alert can state its fix's performance effect.
 
 1. **Pause.** Every running unit finishes its current developer or auditor pass, then waits. No new pass and no new unit starts.
-2. **Alert the commander now**, without waiting for the next gate. For each item, give: where it is (`file:line`), the symptom or the harm, the culprit, the evidence grade, the proposed fix with its cost and risk, and its effect on the other side (performance for a coupling or cohesion fix, coupling and cohesion for a performance fix). If the performance check rejected the item's fix, say so with the reason, and offer an alternative fix or acceptance instead. End with the request: approve the fix, or decline it. The commander's decision ends the pause: waiting units resume.
+2. **Alert the commander now**, without waiting for the next gate. For each item, give: where it is (`file:line`), the symptom or the harm, the culprit, the evidence grade, the proposed fix with its cost and risk, and its effect on the other side (performance for a coupling, cohesion or race fix, coupling and cohesion for a performance fix). If the performance check rejected the item's fix, say so with the reason, and offer an alternative fix or acceptance instead. End with the request: approve the fix, or decline it. The commander's decision ends the pause: waiting units resume.
 3. **Approved:** dispatch the fix at once, ahead of queued tasks. Use the unit's own developer if it is still on the task; otherwise start a new developer–auditor unit. Add the fix's files to the developer's "Files you own". Rule 4 holds in full: the fix takes the next free slot that has no file conflict. Then re-dispatch the auditor with the updated handoff note. It re-checks the item, then runs the full audit (task mode), or re-checks the item only (structure-review mode). If the developer cannot apply the approved fix, bring the reason back to the commander as a new critical alert.
 4. **Declined:** record the item as *accepted by the commander*, with the reason. It no longer blocks a `pass` verdict. If the auditor stopped early, re-dispatch it to finish the audit.
 5. Log every alert in the "Critical alerts" table in `tasks.md`.
